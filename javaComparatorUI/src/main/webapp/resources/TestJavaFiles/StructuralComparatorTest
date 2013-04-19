@@ -1,0 +1,83 @@
+package com.imaginea.structuralComaparator.test;
+
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.imaginea.structuralComaparator.domain.ComparisonResult;
+import com.imaginea.structuralComaparator.domain.Import;
+import com.imaginea.structuralComaparator.domain.Type;
+import com.imaginea.structuralComaparator.repo.ComparatorImpl;
+
+interface abc{
+	
+}
+
+abstract class bac{
+	
+}
+
+
+enum en { 
+	apple,apples;
+}
+
+public class StructuralComapareTest extends bac  implements abc{
+
+	@Test
+	public final void assertPackageEqual() {
+		ComparatorImpl comparator = new ComparatorImpl();
+		ComparisonResult result = comparator.compare("src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java",
+				"src/main/java/com/imaginea/structuralComaparator/repo/JavaParser.java");
+		short diff = result.getPkg().getDiff();
+	}
+
+	@Test
+	public final void assertImportsEqual() {
+		ComparatorImpl comparator = new ComparatorImpl();
+		ComparisonResult result = comparator.compare("src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java",
+				"src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java");
+		// "src/main/java/com/imaginea/structuralComaparator/repo/JavaParser.java");
+		List<Import> imports = result.getImports();
+	}
+
+	void isImportsDifferent(List<Import> imports) {
+	}
+
+	@Test
+	public final void assertTypesEqual() {
+		ComparatorImpl comparator = new ComparatorImpl();
+		ComparisonResult result = comparator.compare("src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java",
+				"src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java");
+				// "src/main/java/com/imaginea/structuralComaparator/repo/JavaParser.java");
+		List<Type> types = result.getTypes();
+	}
+
+	private void isTypesDifferent(List<Type> types) {
+	}
+
+	static void testTypes() {
+		ComparatorImpl comparator = new ComparatorImpl();
+		ComparisonResult result = comparator.compare(
+				"F:/Workspace/structuralComaparator/src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java",
+//				"F:/Workspace/structuralComaparator/src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java");
+				"F:\\Workspace\\StructuralComparatorWeb\\src\\main\\java\\com\\imaginea\\assessor1\\JDTTester.java");
+		List<Type> types = result.getTypes();
+	}
+	
+	static void testImports() {
+		ComparatorImpl comparator = new ComparatorImpl();
+		ComparisonResult result = comparator.compare(
+				"F:/Workspace/structuralComaparator/src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java",
+				"F:/Workspace/structuralComaparator/src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java");
+				// "F:/Workspace/structuralComaparator/src/main/java/com/imaginea/structuralComaparator/repo/JavaParser.java");
+		List<Import> imports = result.getImports();
+	}
+
+	public static void main(String[] args) {
+		String a = null;
+		String b = null;
+	}
+
+}

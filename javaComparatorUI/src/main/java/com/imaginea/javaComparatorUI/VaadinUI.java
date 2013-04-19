@@ -14,10 +14,12 @@ import com.imaginea.javaStructuralComparator.domain.ComparisonResult;
 import com.imaginea.javaStructuralComparator.domain.Import;
 import com.imaginea.javaStructuralComparator.domain.Type;
 import com.imaginea.javaStructuralComparator.domain.uiNode.Package;
+import com.imaginea.javaStructuralComparator.repo.ComparatorImpl;
 import com.imaginea.javaStructuralComparator.repo.ComparatorUtil;
 import com.vaadin.annotations.Theme;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -37,7 +39,7 @@ public class VaadinUI extends UI {
 	private String javaCodeFormatterTag2 = "</pre>";
 
 	public static void main(String[] args) throws IOException {
-		String json = new VaadinUI().readFile("C:/Users/vinod/Desktop/dummy.json");
+		String json = new VaadinUI().readFile("e:/dummy.json");
 		Gson gson = new Gson();
 		ComparisonResult cResult = gson.fromJson(json, ComparisonResult.class);
 		System.out.println(cResult.getImports().size());
@@ -45,13 +47,18 @@ public class VaadinUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
+
+		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/resources/TestJavaFiles/";
+		String fileA = basepath + request.getParameter("fileA");
+		String fileB = basepath + request.getParameter("fileB");
+
 		// initTest();
-		initUI();
+		initUI(fileA, fileB);
 		// tester();
 	}
 
 	@SuppressWarnings("deprecation")
-	private void initUI() {
+	private void initUI(String fileA, String fileB) {
 
 		final HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
 		setContent(splitPanel);
@@ -61,14 +68,17 @@ public class VaadinUI extends UI {
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 
-		String json = null;
-		try {
-			json = new VaadinUI().readFile("C:/Users/vinod/Desktop/dummy.json");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		Gson gson = new Gson();
-		ComparisonResult cResult = gson.fromJson(json, ComparisonResult.class);
+		// String json = null;
+		// try {
+		// json = new VaadinUI().readFile("E:/dummy.json");
+		// } catch (IOException e1) {
+		// e1.printStackTrace();
+		// }
+		// Gson gson = new Gson();
+		// ComparisonResult cResult = gson.fromJson(json,
+		// ComparisonResult.class);
+		ComparatorImpl comparator = new ComparatorImpl();
+		ComparisonResult cResult = comparator.compare(fileA, fileB);
 		final Tree tree = new Tree("ComparisonStructure");
 		constructTree(tree, cResult);
 
@@ -184,6 +194,8 @@ public class VaadinUI extends UI {
 
 	void constructTree(Tree tree, Object parent, List<Import> imports) {
 		for (Import imprt : imports) {
+			if (imprt.getDiff() == ComparatorUtil.NOMODIFICATION)
+				continue;
 			com.imaginea.javaStructuralComparator.domain.uiNode.Import obj = new com.imaginea.javaStructuralComparator.domain.uiNode.Import(
 					imprt);
 
@@ -195,11 +207,13 @@ public class VaadinUI extends UI {
 
 	void constructTypesTree(Tree tree, Object parent, List<Type> types) {
 		for (Type type : types) {
+			if (type.getDiff() == ComparatorUtil.NOMODIFICATION)
+				continue;
 			com.imaginea.javaStructuralComparator.domain.uiNode.Type obj = new com.imaginea.javaStructuralComparator.domain.uiNode.Type(
 					type);
 			tree.addItem(obj);
 			tree.setParent(obj, parent);
-			tree.setStyleName("change");
+			// tree.setStyleName("change");
 			if (type.getCommonChilds().size() > 0)
 				constructTypesTree(tree, obj, type.getCommonChilds());
 			else

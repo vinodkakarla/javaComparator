@@ -159,6 +159,7 @@ public class ComparatorUtil {
 			} else {
 				type = new Type();
 				type.setDiff(EXPECTEDDEFAULT);
+				type.getCommonChilds().addAll(DeclarationConstructorUtil.processDifference2ChildNodes(expectedTypeDeclarationNode, EXPECTEDDEFAULT));
 			}
 
 			type.setAbstractDeclarations(expectedTypeDeclarationNode, 1);
@@ -168,6 +169,7 @@ public class ComparatorUtil {
 		List<Type> leftOuts = new ArrayList<Type>(bufferTypes.values());
 		for (Type leftOutType : leftOuts) {
 			leftOutType.setDiff(ACTUALDEFAULT);
+			leftOutType.getCommonChilds().addAll(DeclarationConstructorUtil.processDifference2ChildNodes(leftOutType.getAbstractDeclarations(0), ACTUALDEFAULT));
 			finalTypes.add(leftOutType);
 		}
 
