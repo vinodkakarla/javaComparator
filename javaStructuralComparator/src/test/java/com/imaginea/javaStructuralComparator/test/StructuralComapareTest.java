@@ -117,7 +117,7 @@ public class StructuralComapareTest extends bac implements abc {
 		ComparatorImpl comparator = new ComparatorImpl();
 		ComparisonResult result12 = comparator.compare(
 				"F:/Workspace/structuralComaparator/src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java",
-				"src/test/resources/TestJavaFiles/Testing.java.txt");
+				"F:/Workspace/structuralComaparator/src/test/java/com/imaginea/structuralComaparator/test/StructuralComapareTest.java");
 		Gson gson = new Gson();
 		String json = gson.toJson(result12);
 		try {

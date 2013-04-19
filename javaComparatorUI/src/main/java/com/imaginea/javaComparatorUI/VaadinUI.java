@@ -50,7 +50,7 @@ public class VaadinUI extends UI {
 
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/resources/TestJavaFiles/";
 		String fileA = basepath + request.getParameter("fileA");
-		String fileB = null;// basepath + request.getParameter("fileB");
+		String fileB = basepath + request.getParameter("fileB");
 
 		// initTest();
 		initUI(fileA, fileB);
@@ -68,16 +68,17 @@ public class VaadinUI extends UI {
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 
-		String json = null;
-		try {
-			json = new VaadinUI().readFile(fileA);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		Gson gson = new Gson();
-		ComparisonResult cResult = gson.fromJson(json, ComparisonResult.class);
-		// ComparatorImpl comparator = new ComparatorImpl();
-		// ComparisonResult cResult = comparator.compare(fileA, fileB);
+		// String json = null;
+		// try {
+		// json = new VaadinUI().readFile(fileA);
+		// } catch (IOException e1) {
+		// e1.printStackTrace();
+		// }
+		// Gson gson = new Gson();
+		// ComparisonResult cResult = gson.fromJson(json,
+		// ComparisonResult.class);
+		ComparatorImpl comparator = new ComparatorImpl();
+		ComparisonResult cResult = comparator.compare(fileA, fileB);
 		final Tree tree = new Tree("ComparisonStructure");
 		constructTree(tree, cResult);
 
